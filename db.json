@@ -1,0 +1,184 @@
+{
+  "hotels": [
+    {
+      "id": "1",
+      "title": "Beachfront Resort",
+      "price": "200",
+      "description": "A luxurious beachfront resort with stunning ocean views and top-notch amenities.",
+      "latitude": "34.0522",
+      "longitude": "-118.2437",
+      "image": "https://picsum.photos/seed/beach/200/300"
+    },
+    {
+      "id": "2",
+      "title": "Mountain Retreat",
+      "price": "150",
+      "description": "A peaceful mountain retreat offering fresh air, hiking trails, and scenic views.",
+      "latitude": "36.7783",
+      "longitude": "-119.4179",
+      "image": "https://picsum.photos/seed/mountain/200/300"
+    },
+    {
+      "id": "3",
+      "title": "City Center Hotel",
+      "price": "120",
+      "description": "A modern hotel located in the heart of the city, close to shopping, dining, and entertainment.",
+      "latitude": "40.7128",
+      "longitude": "-74.0060",
+      "image": "https://picsum.photos/seed/city/200/300"
+    },
+    {
+      "id": "4",
+      "title": "Lakeside Lodge",
+      "price": "180",
+      "description": "A serene lakeside lodge surrounded by nature, perfect for a relaxing getaway.",
+      "latitude": "37.7749",
+      "longitude": "-122.4194",
+      "image": "https://picsum.photos/seed/lakeside/200/300"
+    },
+    {
+      "id": "5",
+      "title": "Desert Oasis",
+      "price": "220",
+      "description": "A luxurious desert oasis with private villas and spa services.",
+      "latitude": "33.4484",
+      "longitude": "-112.0740",
+      "image": "https://picsum.photos/seed/desert/200/300"
+    },
+    {
+      "id": "6",
+      "title": "Countryside Inn",
+      "price": "100",
+      "description": "A quaint inn located in the peaceful countryside, perfect for a quiet retreat.",
+      "latitude": "51.5074",
+      "longitude": "-0.1278",
+      "image": "https://picsum.photos/seed/countryside/200/300"
+    },
+    {
+      "id": "7",
+      "title": "Jungle Hideaway",
+      "price": "250",
+      "description": "A hidden retreat in the heart of the jungle with eco-friendly cabins.",
+      "latitude": "-3.4653",
+      "longitude": "-62.2159",
+      "image": "https://picsum.photos/seed/jungle/200/300"
+    },
+    {
+      "id": "8",
+      "title": "Safari Lodge",
+      "price": "300",
+      "description": "Experience the wild with guided safari tours and luxurious accommodations.",
+      "latitude": "-1.2921",
+      "longitude": "36.8219",
+      "image": "https://picsum.photos/seed/safari/200/300"
+    },
+    {
+      "id": "9",
+      "title": "Historic Castle Hotel",
+      "price": "400",
+      "description": "Stay in a centuries-old castle with historic charm and modern amenities.",
+      "latitude": "48.8566",
+      "longitude": "2.3522",
+      "image": "https://picsum.photos/seed/castle/200/300"
+    },
+    {
+      "id": "10",
+      "title": "Island Paradise Resort",
+      "price": "500",
+      "description": "A luxurious island resort surrounded by turquoise waters and sandy beaches.",
+      "latitude": "25.7617",
+      "longitude": "-80.1918",
+      "image": "https://picsum.photos/seed/island/200/300"
+    },
+    {
+      "id": "11",
+      "title": "Ski Chalet",
+      "price": "350",
+      "description": "A cozy chalet with ski-in, ski-out access and stunning mountain views.",
+      "latitude": "46.8182",
+      "longitude": "8.2275",
+      "image": "https://picsum.photos/seed/ski/200/300"
+    },
+    {
+      "id": "12",
+      "title": "Urban Loft",
+      "price": "150",
+      "description": "A stylish loft in the city center, perfect for business travelers.",
+      "latitude": "41.8781",
+      "longitude": "-87.6298",
+      "image": "https://picsum.photos/seed/urban/200/300"
+    },
+    {
+      "id": "13",
+      "title": "Vineyard Villa",
+      "price": "280",
+      "description": "Stay at a villa surrounded by vineyards and enjoy wine tasting tours.",
+      "latitude": "37.7749",
+      "longitude": "-122.4194",
+      "image": "https://picsum.photos/seed/vineyard/200/300"
+    },
+    {
+      "id": "14",
+      "title": "Countryside Manor",
+      "price": "200",
+      "description": "A historic manor house set in the rolling countryside.",
+      "latitude": "53.3498",
+      "longitude": "-6.2603",
+      "image": "https://picsum.photos/seed/manor/200/300"
+    },
+    {
+      "id": "15",
+      "title": "Eco-Friendly Cabin",
+      "price": "120",
+      "description": "Sustainable living in an off-the-grid eco-cabin.",
+      "latitude": "39.7392",
+      "longitude": "-104.9903",
+      "image": "https://picsum.photos/seed/eco/200/300"
+    },
+    {
+      "id": "16",
+      "title": "Luxury Penthouse",
+      "price": "800",
+      "description": "An opulent penthouse suite with panoramic city views.",
+      "latitude": "34.0522",
+      "longitude": "-118.2437",
+      "image": "https://picsum.photos/seed/penthouse/200/300"
+    },
+    {
+      "id": "17",
+      "title": "Farmhouse Stay",
+      "price": "90",
+      "description": "A rustic farmhouse experience with fresh farm-to-table meals.",
+      "latitude": "45.4215",
+      "longitude": "-75.6972",
+      "image": "https://picsum.photos/seed/farmhouse/200/300"
+    },
+    {
+      "id": "18",
+      "title": "Cliffside Bungalow",
+      "price": "420",
+      "description": "A private bungalow perched on a cliff with ocean views.",
+      "latitude": "35.6895",
+      "longitude": "139.6917",
+      "image": "https://picsum.photos/seed/cliff/200/300"
+    },
+    {
+      "id": "19",
+      "title": "Rainforest Treehouse",
+      "price": "350",
+      "description": "Stay in a treehouse nestled in the rainforest canopy.",
+      "latitude": "-9.4438",
+      "longitude": "147.1803",
+      "image": "https://picsum.photos/seed/treehouse/200/300"
+    },
+    {
+      "id": "20",
+      "title": "Art Deco Boutique Hotel",
+      "price": "230",
+      "description": "A stylish boutique hotel with an Art Deco theme.",
+      "latitude": "52.3676",
+      "longitude": "4.9041",
+      "image": "https://picsum.photos/seed/artdeco/200/300"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #ecfdf5;
+    justify-content: space-between;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 550px;
+  gap: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .paginationButton {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #34d399;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+  }
+  
+  .paginationButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    margin: 0 10px;
+  }
+  
