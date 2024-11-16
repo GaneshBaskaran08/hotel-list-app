@@ -21,7 +21,11 @@ export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
 });
 
 export const addHotel = createAsyncThunk("hotels/addHotel", async (hotel) => {
-  const response = await axios.post(API, hotel);
+  const response = await axios.post(API, hotel, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 });
 

@@ -4,7 +4,12 @@ import styles from "./styles.module.css";
 import SearchBar from "../../../../common/SearchBar";
 import PriceRangeFilter from "./components/PriceRangeFilter";
 import FormModal from "../../../../common/Form";
-import { setFilter, fetchHotels, addHotel, setFilteredHotels } from "../../../../redux/hotelsReducer";
+import {
+  setFilter,
+  fetchHotels,
+  addHotel,
+  setFilteredHotels,
+} from "../../../../redux/hotelsReducer";
 
 const HomeFilter = () => {
   const dispatch = useDispatch();
@@ -25,7 +30,9 @@ const HomeFilter = () => {
 
   const filterHotels = (searchTerm, minPrice, maxPrice) => {
     const filtered = hotels.filter((hotel) => {
-      const matchesSearch = hotel.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = hotel.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
       const matchesPrice = hotel.price >= minPrice && hotel.price <= maxPrice;
       return matchesSearch && matchesPrice;
     });
@@ -42,7 +49,21 @@ const HomeFilter = () => {
   };
 
   const handleSubmit = (data) => {
-    dispatch(addHotel(data));
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("latitude", data.latitude);
+    formData.append("longitude", data.longitude);
+    formData.append("price", data.price);
+
+    if (data.image && data.image instanceof File) {
+      formData.append("image", data.image);
+    } else {
+      console.log("No image file selected");
+    }
+    
+    dispatch(addHotel(formData));
     setIsModalOpen(false);
     alert("Item saved successfully!");
   };
