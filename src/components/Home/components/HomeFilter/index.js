@@ -8,46 +8,39 @@ import { setFilter, fetchHotels, addHotel, setFilteredHotels } from "../../../..
 
 const HomeFilter = () => {
   const dispatch = useDispatch();
-  const { hotels, filteredHotels, filter } = useSelector((state) => state.hotels);
+  const { hotels, filter } = useSelector((state) => state.hotels);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentData, setCurrentData] = useState(null);
 
-  // Handle search filter change
   const handleChange = (event) => {
     dispatch(setFilter({ searchTerm: event.target.value }));
-    filterHotels(event.target.value, filter.minPrice, filter.maxPrice); // Apply filter after search term change
+    filterHotels(event.target.value, filter.minPrice, filter.maxPrice);
   };
 
-  // Handle price range filter
   const handleApply = (priceRange) => {
     dispatch(setFilter(priceRange));
-    filterHotels(filter.searchTerm, priceRange.minPrice, priceRange.maxPrice); // Apply filter after price range change
+    filterHotels(filter.searchTerm, priceRange.minPrice, priceRange.maxPrice);
   };
 
-  // Filter hotels based on search term and price range
   const filterHotels = (searchTerm, minPrice, maxPrice) => {
     const filtered = hotels.filter((hotel) => {
       const matchesSearch = hotel.title.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesPrice = hotel.price >= minPrice && hotel.price <= maxPrice;
       return matchesSearch && matchesPrice;
     });
-    console.log(filtered,'filtered')
-    dispatch(setFilteredHotels(filtered)); // Update filteredHotels in Redux store
+    dispatch(setFilteredHotels(filtered));
   };
 
-  // Fetch hotels initially
   useEffect(() => {
     dispatch(fetchHotels());
   }, [dispatch]);
 
-  // Handle hotel creation
   const handleCreate = () => {
     setCurrentData(null);
     setIsModalOpen(true);
   };
 
-  // Handle form submission for creating/updating hotel
   const handleSubmit = (data) => {
     dispatch(addHotel(data));
     setIsModalOpen(false);

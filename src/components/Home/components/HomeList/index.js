@@ -23,7 +23,7 @@ const HomeList = () => {
 
   useEffect(() => {
     dispatch(fetchHotels());
-  }, [fetchHotels, dispatch]);
+  }, [dispatch]);
 
   const totalPages = Math.ceil(filteredHotels.length / itemsPerPage);
   const indexOfLastHotel = currentPage * itemsPerPage;
