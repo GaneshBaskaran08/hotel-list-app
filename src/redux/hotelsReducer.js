@@ -13,7 +13,7 @@ const initialState = {
   },
 };
 
-const API = process.env.HOTELS_API;
+const API = process.env.REACT_APP_HOTELS_API;
 
 export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
   const response = await axios.get(API);
