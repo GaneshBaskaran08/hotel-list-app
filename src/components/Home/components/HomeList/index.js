@@ -7,6 +7,7 @@ import {
   filterFetchHotels,
   deleteHotel,
   updateHotel,
+  setPage,
 } from "../../../../redux/hotelsReducer";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../../../common/Pagination";
@@ -14,32 +15,34 @@ import FormModal from "../../../../common/Form";
 
 const HomeList = () => {
   const dispatch = useDispatch();
-  const { hotels, filteredHotels, filter } = useSelector(
-    (state) => state.hotels
-  );
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    hotels,
+    filteredHotels,
+    filter,
+    currentPage,
+    itemsPerPage,
+    totalItems,
+  } = useSelector((state) => state.hotels);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentData, setCurrentData] = useState(null);
   const navigate = useNavigate();
-  const itemsPerPage = 5;
 
   useEffect(() => {
-    if (filter.title || filter.minPrice || filter.maxPrice !== 1000) {
-      dispatch(filterFetchHotels(filter));
-    } else {
-      dispatch(fetchHotels());
-    }
-  }, [dispatch, filter]);
+    const fetchData = async () => {
+      if (filter.title || filter.minPrice || filter.maxPrice !== 1000) {
+        await dispatch(
+          filterFetchHotels({ filter, page: currentPage, limit: itemsPerPage })
+        );
+      } else {
+        await dispatch(fetchHotels({ page: currentPage, limit: itemsPerPage }));
+      }
+    };
+    fetchData();
+  }, [dispatch, filter, currentPage, itemsPerPage]);
 
   const hotelsToDisplay = filteredHotels.length > 0 ? filteredHotels : hotels;
-  const totalPages = Math.ceil(hotelsToDisplay.length / itemsPerPage);
-  const indexOfLastHotel = currentPage * itemsPerPage;
-  const indexOfFirstHotel = indexOfLastHotel - itemsPerPage;
-  const currentHotels = hotelsToDisplay.slice(
-    indexOfFirstHotel,
-    indexOfLastHotel
-  );
 
   const handleSelect = (id) => {
     navigate(`/details/${id}`);
@@ -48,6 +51,7 @@ const HomeList = () => {
   const handleDelete = async (id) => {
     await dispatch(deleteHotel(id));
     alert("Hotel deleted successfully!");
+    dispatch(fetchHotels({ page: currentPage, limit: itemsPerPage }));
   };
 
   const handleEdit = (hotel) => {
@@ -56,12 +60,8 @@ const HomeList = () => {
     setIsModalOpen(true);
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  const handlePageChange = (page) => {
+    dispatch(setPage(page));
   };
 
   const handleSubmit = async (data) => {
@@ -75,24 +75,27 @@ const HomeList = () => {
   return (
     <div className={styles.container}>
       <div className={styles.cards}>
-        {currentHotels.map((hotel) => (
-          <Card
-            key={hotel.id}
-            name={hotel.title}
-            price={hotel.price}
-            image={hotel.image}
-            description={hotel.description}
-            onSelect={() => handleSelect(hotel.id)}
-            onDelete={() => handleDelete(hotel.id)}
-            onEdit={() => handleEdit(hotel)}
-          />
-        ))}
+        {hotelsToDisplay.length ? (
+          hotelsToDisplay.map((hotel) => (
+            <Card
+              key={hotel.id}
+              name={hotel.title}
+              price={hotel.price}
+              image={hotel.image}
+              description={hotel.description}
+              onSelect={() => handleSelect(hotel.id)}
+              onDelete={() => handleDelete(hotel.id)}
+              onEdit={() => handleEdit(hotel)}
+            />
+          ))
+        ) : (
+          <p>No hotels available.</p>
+        )}
       </div>
       <Pagination
         currentPage={currentPage}
-        totalPages={totalPages}
-        onPrevPage={handlePrevPage}
-        onNextPage={handleNextPage}
+        totalPages={Math.ceil(totalItems / itemsPerPage)}
+        onPageChange={handlePageChange}
       />
       <FormModal
         isOpen={isModalOpen}

@@ -30,3 +30,9 @@
     background-color:#34d399;
     color: #fff;
 }
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}

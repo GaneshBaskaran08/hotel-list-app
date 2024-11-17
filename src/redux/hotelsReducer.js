@@ -11,24 +11,34 @@ const initialState = {
     minPrice: 0,
     maxPrice: 1000,
   },
+  currentPage: 1,
+  itemsPerPage: 5,
+  totalItems: 0,
 };
 
 const API = process.env.REACT_APP_HOTELS_API;
 
-export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
-  const response = await axios.get(API);
-  return response.data;
-});
+export const fetchHotels = createAsyncThunk(
+  "hotels/fetchHotels",
+  async ({ page, limit }) => {
+    const response = await axios.get(API, {
+      params: { page, limit },
+    });
+    return response.data;
+  }
+);
 
 export const filterFetchHotels = createAsyncThunk(
   "hotels/filterFetchHotels",
-  async (filter) => {
+  async ({ filter, page, limit }) => {
     const { title, minPrice, maxPrice } = filter;
     const response = await axios.get(API, {
       params: {
         title: title || "",
         minPrice: minPrice || 0,
         maxPrice: maxPrice || 1000,
+        page,
+        limit,
       },
     });
     return response.data;
@@ -42,7 +52,6 @@ export const fetchHotelById = createAsyncThunk(
     return response.data;
   }
 );
-
 
 export const addHotel = createAsyncThunk("hotels/addHotel", async (hotel) => {
   const formData = new FormData();
@@ -96,15 +105,20 @@ const hotelsReducer = createSlice({
     setFilter: (state, action) => {
       state.filter = { ...state.filter, ...action.payload };
     },
+    setPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchHotels.fulfilled, (state, action) => {
-        state.hotels = action.payload;
+        state.hotels = action.payload.hotels;
+        state.totalItems = action.payload.totalItems;
         state.filteredHotels = [];
       })
       .addCase(filterFetchHotels.fulfilled, (state, action) => {
-        state.filteredHotels = action.payload;
+        state.filteredHotels = action.payload.hotels;
+        state.totalItems = action.payload.totalItems;
         state.hotels = [];
       })
       .addCase(fetchHotelById.fulfilled, (state, action) => {
@@ -112,18 +126,22 @@ const hotelsReducer = createSlice({
       })
       .addCase(addHotel.fulfilled, (state, action) => {
         state.hotels.push(action.payload);
+        state.totalItems += 1;
       })
       .addCase(updateHotel.fulfilled, (state, action) => {
         const index = state.hotels.findIndex((h) => h.id === action.payload.id);
-        state.hotels[index] = action.payload;
+        if (index !== -1) {
+          state.hotels[index] = action.payload;
+        }
       })
       .addCase(deleteHotel.fulfilled, (state, action) => {
         state.hotels = state.hotels.filter(
           (hotel) => hotel.id !== action.payload
         );
+        state.totalItems -= 1;
       });
   },
 });
 
-export const { setFilter } = hotelsReducer.actions;
+export const { setFilter, setPage } = hotelsReducer.actions;
 export default hotelsReducer.reducer;
