@@ -7,41 +7,29 @@ import FormModal from "../../../../common/Form";
 import {
   setFilter,
   fetchHotels,
+  filterFetchHotels,
   addHotel,
-  setFilteredHotels,
 } from "../../../../redux/hotelsReducer";
 
 const HomeFilter = () => {
   const dispatch = useDispatch();
-  const { hotels, filter } = useSelector((state) => state.hotels);
+  const { filter } = useSelector((state) => state.hotels);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentData, setCurrentData] = useState(null);
 
-  const handleChange = (event) => {
-    dispatch(setFilter({ searchTerm: event.target.value }));
-    filterHotels(event.target.value, filter.minPrice, filter.maxPrice);
-  };
-
-  const handleApply = (priceRange) => {
-    dispatch(setFilter(priceRange));
-    filterHotels(filter.searchTerm, priceRange.minPrice, priceRange.maxPrice);
-  };
-
-  const filterHotels = (searchTerm, minPrice, maxPrice) => {
-    const filtered = hotels.filter((hotel) => {
-      const matchesSearch = hotel.title
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesPrice = hotel.price >= minPrice && hotel.price <= maxPrice;
-      return matchesSearch && matchesPrice;
-    });
-    dispatch(setFilteredHotels(filtered));
-  };
-
   useEffect(() => {
     dispatch(fetchHotels());
   }, [dispatch]);
+
+  const handleSearchChange = (event) => {
+    dispatch(setFilter({ title: event.target.value }));
+  };
+
+  const handleApplyFilter = (priceRange) => {
+    dispatch(setFilter(priceRange));
+    dispatch(filterFetchHotels({ ...filter, ...priceRange }));
+  };
 
   const handleCreate = () => {
     setCurrentData(null);
@@ -49,41 +37,26 @@ const HomeFilter = () => {
   };
 
   const handleSubmit = (data) => {
-    const formData = new FormData();
-
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("latitude", data.latitude);
-    formData.append("longitude", data.longitude);
-    formData.append("price", data.price);
-
-    if (data.image && data.image instanceof File) {
-      formData.append("image", data.image);
-    } else {
-      console.log("No image file selected");
-    }
-    
-    dispatch(addHotel(formData));
+    dispatch(addHotel(data));
     setIsModalOpen(false);
     alert("Item saved successfully!");
   };
 
   return (
     <div className={styles.container}>
-      <SearchBar value={filter.searchTerm} onChange={handleChange} />
+      <SearchBar value={filter.title} onChange={handleSearchChange} />
       <div>
         <div className={styles.text}>Price Range:</div>
         <PriceRangeFilter
           minValue={filter.minPrice}
           maxValue={filter.maxPrice}
-          onApply={handleApply}
+          onApply={handleApplyFilter}
         />
       </div>
       <div className={styles.text}>Create Hotel:</div>
       <button className={styles.button} onClick={handleCreate}>
         Create
       </button>
-
       <FormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

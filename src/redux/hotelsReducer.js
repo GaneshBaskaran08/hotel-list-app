@@ -7,7 +7,7 @@ const initialState = {
   status: "idle",
   error: null,
   filter: {
-    searchTerm: "",
+    title: "",
     minPrice: 0,
     maxPrice: 1000,
   },
@@ -20,8 +20,33 @@ export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
   return response.data;
 });
 
+export const filterFetchHotels = createAsyncThunk(
+  "hotels/filterFetchHotels",
+  async (filter) => {
+    const { title, minPrice, maxPrice } = filter;
+    const response = await axios.get(API, {
+      params: {
+        title: title || "",
+        minPrice: minPrice || 0,
+        maxPrice: maxPrice || 1000,
+      },
+    });
+    return response.data;
+  }
+);
+
 export const addHotel = createAsyncThunk("hotels/addHotel", async (hotel) => {
-  const response = await axios.post(API, hotel, {
+  const formData = new FormData();
+  formData.append("title", hotel.title);
+  formData.append("description", hotel.description);
+  formData.append("latitude", hotel.latitude);
+  formData.append("longitude", hotel.longitude);
+  formData.append("price", hotel.price);
+
+  if (hotel.image instanceof File) {
+    formData.append("image", hotel.image);
+  }
+  const response = await axios.post(API, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -32,7 +57,17 @@ export const addHotel = createAsyncThunk("hotels/addHotel", async (hotel) => {
 export const updateHotel = createAsyncThunk(
   "hotels/updateHotel",
   async (hotel) => {
-    const response = await axios.put(`${API}/${hotel.id}`, hotel);
+    const formData = new FormData();
+    formData.append("title", hotel.title);
+    formData.append("description", hotel.description);
+    formData.append("latitude", hotel.latitude);
+    formData.append("longitude", hotel.longitude);
+    formData.append("price", hotel.price);
+
+    if (hotel.image instanceof File) {
+      formData.append("image", hotel.image);
+    }
+    const response = await axios.put(`${API}/${hotel.id}`, formData);
     return response.data;
   }
 );
@@ -52,65 +87,31 @@ const hotelsReducer = createSlice({
     setFilter: (state, action) => {
       state.filter = { ...state.filter, ...action.payload };
     },
-    setFilteredHotels: (state, action) => {
-      state.filteredHotels = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchHotels.fulfilled, (state, action) => {
         state.hotels = action.payload;
-        state.filteredHotels = state.hotels.filter((hotel) => {
-          const { searchTerm, minPrice, maxPrice } = state.filter;
-          const matchesSearch = hotel.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-          const matchesPrice =
-            hotel.price >= minPrice && hotel.price <= maxPrice;
-          return matchesSearch && matchesPrice;
-        });
+        state.filteredHotels = [];
+      })
+      .addCase(filterFetchHotels.fulfilled, (state, action) => {
+        state.filteredHotels = action.payload;
+        state.hotels = [];
       })
       .addCase(addHotel.fulfilled, (state, action) => {
         state.hotels.push(action.payload);
-        state.filteredHotels = state.hotels.filter((hotel) => {
-          const { searchTerm, minPrice, maxPrice } = state.filter;
-          const matchesSearch = hotel.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-          const matchesPrice =
-            hotel.price >= minPrice && hotel.price <= maxPrice;
-          return matchesSearch && matchesPrice;
-        });
       })
       .addCase(updateHotel.fulfilled, (state, action) => {
         const index = state.hotels.findIndex((h) => h.id === action.payload.id);
         state.hotels[index] = action.payload;
-        state.filteredHotels = state.hotels.filter((hotel) => {
-          const { searchTerm, minPrice, maxPrice } = state.filter;
-          const matchesSearch = hotel.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-          const matchesPrice =
-            hotel.price >= minPrice && hotel.price <= maxPrice;
-          return matchesSearch && matchesPrice;
-        });
       })
       .addCase(deleteHotel.fulfilled, (state, action) => {
         state.hotels = state.hotels.filter(
           (hotel) => hotel.id !== action.payload
         );
-        state.filteredHotels = state.hotels.filter((hotel) => {
-          const { searchTerm, minPrice, maxPrice } = state.filter;
-          const matchesSearch = hotel.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-          const matchesPrice =
-            hotel.price >= minPrice && hotel.price <= maxPrice;
-          return matchesSearch && matchesPrice;
-        });
       });
   },
 });
 
-export const { setFilter, setFilteredHotels } = hotelsReducer.actions;
+export const { setFilter } = hotelsReducer.actions;
 export default hotelsReducer.reducer;

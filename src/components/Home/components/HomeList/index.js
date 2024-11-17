@@ -4,6 +4,7 @@ import Card from "../../../../common/Card";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchHotels,
+  filterFetchHotels,
   deleteHotel,
   updateHotel,
 } from "../../../../redux/hotelsReducer";
@@ -13,7 +14,9 @@ import FormModal from "../../../../common/Form";
 
 const HomeList = () => {
   const dispatch = useDispatch();
-  const { filteredHotels } = useSelector((state) => state.hotels);
+  const { hotels, filteredHotels, filter } = useSelector(
+    (state) => state.hotels
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -22,13 +25,18 @@ const HomeList = () => {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    dispatch(fetchHotels());
-  }, [dispatch]);
+    if (filter.title || filter.minPrice || filter.maxPrice !== 1000) {
+      dispatch(filterFetchHotels(filter));
+    } else {
+      dispatch(fetchHotels());
+    }
+  }, [dispatch, filter]);
 
-  const totalPages = Math.ceil(filteredHotels.length / itemsPerPage);
+  const hotelsToDisplay = filteredHotels.length > 0 ? filteredHotels : hotels;
+  const totalPages = Math.ceil(hotelsToDisplay.length / itemsPerPage);
   const indexOfLastHotel = currentPage * itemsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - itemsPerPage;
-  const currentHotels = filteredHotels.slice(
+  const currentHotels = hotelsToDisplay.slice(
     indexOfFirstHotel,
     indexOfLastHotel
   );
