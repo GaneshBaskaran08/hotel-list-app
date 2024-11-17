@@ -89,7 +89,7 @@ const HomeList = () => {
             />
           ))
         ) : (
-          <p>No hotels available.</p>
+          <p  className={styles.noHotelsMessage}>No hotels available</p>
         )}
       </div>
       <Pagination

@@ -16,7 +16,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       </span>
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || totalPages === 0}
         className={styles.paginationButton}
       >
         <span className={`material-icons ${styles.icon}`}>
