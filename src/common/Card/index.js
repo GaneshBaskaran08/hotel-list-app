@@ -12,7 +12,7 @@ const Card = ({
 }) => {
   return (
     <div className={styles.container}>
-      <img src={image} alt={name} className={styles.image} />
+      <img onClick={onSelect} src={image} alt={name} className={styles.image} />
       <div className={styles.content}>
         <div onClick={onSelect}>
           <h5 className={styles.name}>{name}</h5>

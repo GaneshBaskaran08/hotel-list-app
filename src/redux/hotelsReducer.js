@@ -35,6 +35,15 @@ export const filterFetchHotels = createAsyncThunk(
   }
 );
 
+export const fetchHotelById = createAsyncThunk(
+  "hotels/fetchHotelById",
+  async (id) => {
+    const response = await axios.get(`${API}/${id}`);
+    return response.data;
+  }
+);
+
+
 export const addHotel = createAsyncThunk("hotels/addHotel", async (hotel) => {
   const formData = new FormData();
   formData.append("title", hotel.title);
@@ -97,6 +106,9 @@ const hotelsReducer = createSlice({
       .addCase(filterFetchHotels.fulfilled, (state, action) => {
         state.filteredHotels = action.payload;
         state.hotels = [];
+      })
+      .addCase(fetchHotelById.fulfilled, (state, action) => {
+        state.hotels = [action.payload];
       })
       .addCase(addHotel.fulfilled, (state, action) => {
         state.hotels.push(action.payload);

@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ecfdf5;
+    background-color: #ecfdf5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 14px;
+}
+
