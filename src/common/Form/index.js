@@ -43,15 +43,30 @@ const FormModal = ({
       setImagePreview(URL.createObjectURL(file));
     }
   };
-
   const validateForm = () => {
     const newErrors = {};
+  
     if (!formData.title) newErrors.title = "Title is required";
-    if (!formData.description)
-      newErrors.description = "Description is required";
-    if (!formData.latitude) newErrors.latitude = "Latitude is required";
-    if (!formData.longitude) newErrors.longitude = "Longitude is required";
+    if (!formData.description) newErrors.description = "Description is required";
+  
+    if (!formData.latitude && formData.latitude !== 0) {
+      newErrors.latitude = "Latitude is required";
+    } else if (isNaN(formData.latitude)) {
+      newErrors.latitude = "Latitude must be a number";
+    } else if (formData.latitude < -90 || formData.latitude > 90) {
+      newErrors.latitude = "Latitude must be between -90 and 90";
+    }
+  
+    if (!formData.longitude && formData.longitude !== 0) {
+      newErrors.longitude = "Longitude is required";
+    } else if (isNaN(formData.longitude)) {
+      newErrors.longitude = "Longitude must be a number";
+    } else if (formData.longitude < -180 || formData.longitude > 180) {
+      newErrors.longitude = "Longitude must be between -180 and 180";
+    }
+  
     if (!formData.price) newErrors.price = "Price is required";
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -91,7 +106,7 @@ const FormModal = ({
           )}
 
           <input
-            type="text"
+            type="number"
             name="latitude"
             placeholder="Latitude"
             value={formData.latitude}
@@ -100,7 +115,7 @@ const FormModal = ({
           {errors.latitude && <p className={styles.error}>{errors.latitude}</p>}
 
           <input
-            type="text"
+            type="number"
             name="longitude"
             placeholder="Longitude"
             value={formData.longitude}

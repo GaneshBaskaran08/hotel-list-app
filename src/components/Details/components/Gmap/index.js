@@ -14,13 +14,14 @@ const defaultCenter = {
 
 const HotelMapComponent = ({ hotel }) => {
   const libraries = ["places", "drawing", "geometry"];
+  const GMAPKEY = process.env.REACT_APP_MAP_KEY
   if (!hotel) {
     return <div className={styles.container}>No Data</div>;
   }
   return (
     <div className={styles.container}>
       <APIProvider
-        apiKey="AIzaSyDoF9WgOn5j9p2b9GZCtQwR4FKOQHZRtfo"
+        apiKey = {GMAPKEY}
         libraries={libraries}
       >
         <Map
